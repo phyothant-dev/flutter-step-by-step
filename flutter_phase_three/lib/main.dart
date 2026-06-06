@@ -107,7 +107,7 @@ class _CryptoPriceScreenState extends State<CryptoPriceScreen> {
                   ),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: Colors.orange.withOpacity(0.2),
+                      backgroundColor: Colors.orange.withValues(alpha: 0.2),
                       child: Icon(
                         coinName == 'bitcoin'
                             ? Icons.currency_bitcoin
