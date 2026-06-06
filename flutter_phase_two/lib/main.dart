@@ -20,23 +20,29 @@ class TodoListScreen extends StatefulWidget {
   State<TodoListScreen> createState() => _TodoListScreenState();
 }
 
-class _TodoListScreenState extends State<TodoListScreen> {
-  // 1. This is our list of habits (our App Memory/State)
-  List<String> tasks = ['Buy groceries', 'Learn Flutter', 'Go for a run'];
+// 1. A custom blue-print structure for our habits
+class HabitItem {
+  String name;
+  bool isDone;
 
-  // 2. This is the controller that captures what the user types inside the box
+  HabitItem({required this.name, this.isDone = false});
+}
+
+class _TodoListScreenState extends State<TodoListScreen> {
+  // 2. Updated our memory list to use our new HabitItem blueprint!
+  List<HabitItem> habits = [
+    HabitItem(name: 'Buy groceries'),
+    HabitItem(name: 'Learn Flutter'),
+    HabitItem(name: 'Go for a run'),
+  ];
   final TextEditingController _textController = TextEditingController();
 
-  // 3. This function adds a new item to our list safely
-  void _addNewTask() {
-    // If the input box is empty, don't do anything!
+  void _addNewHabit() {
     if (_textController.text.isEmpty) return;
 
-    // This is the magic function! It tells Flutter to refresh the screen with new data.
     setState(() {
-      tasks.add(_textController.text); // Add what the user typed to our list
-      _textController
-          .clear(); // Clear out the input field so it's fresh for next time
+      habits.add(HabitItem(name: _textController.text));
+      _textController.clear();
     });
   }
 
@@ -49,15 +55,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       body: Column(
         children: [
-          // 4. This is the input box row layout
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller:
-                        _textController, // Attaching our controller here
+                    controller: _textController,
                     decoration: const InputDecoration(
                       hintText: 'Enter a new habit...',
                       border: OutlineInputBorder(),
@@ -65,9 +69,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                // The add button right next to the text box
                 ElevatedButton(
-                  onPressed: _addNewTask,
+                  onPressed: _addNewHabit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
                   ),
@@ -79,11 +82,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
               ],
             ),
           ),
-
-          // 5. This displays our dynamic list
           Expanded(
             child: ListView.builder(
-              itemCount: tasks.length,
+              itemCount: habits.length,
               itemBuilder: (context, index) {
                 return Card(
                   margin: const EdgeInsets.symmetric(
@@ -91,11 +92,32 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     vertical: 5,
                   ),
                   child: ListTile(
-                    title: Text(tasks[index]),
-                    leading: const Icon(
-                      Icons.check_box_outline_blank,
+                    title: Text(
+                      habits[index].name,
+                      // 3. Strikethrough style if the habit is checked off!
+                      style: TextStyle(
+                        decoration: habits[index].isDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        color: habits[index].isDone
+                            ? Colors.grey
+                            : Colors.black,
+                      ),
+                    ),
+                    leading: Icon(
+                      // 4. Change icon depending on state
+                      habits[index].isDone
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
                       color: Colors.blueAccent,
                     ),
+                    // 5. This functions triggers when a user taps anywhere on the row!
+                    onTap: () {
+                      setState(() {
+                        // Toggle the true/false value!
+                        habits[index].isDone = !habits[index].isDone;
+                      });
+                    },
                   ),
                 );
               },
