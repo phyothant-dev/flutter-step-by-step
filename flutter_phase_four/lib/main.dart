@@ -9,19 +9,67 @@ class RecipeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: RecipeHomeScreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.red),
+      home: const RecipeHomeScreen(),
+    );
   }
 }
 
-// --- SCREEN 1: THE HOME SCREEN ---
+// 1. Create a custom blueprint to model real recipe datasets
+class Recipe {
+  final String title;
+  final String duration;
+  final List<String> ingredients;
+  final List<String> steps;
+
+  const Recipe({
+    required this.title,
+    required this.duration,
+    required this.ingredients,
+    required this.steps,
+  });
+}
+
+// --- SCREEN 1: THE HOME LIST VIEW ---
 class RecipeHomeScreen extends StatelessWidget {
   const RecipeHomeScreen({super.key});
 
-  // Simple hardcoded list of recipes for our beginner layout
-  final List<String> recipes = const [
-    'Spaghetti Carbonara',
-    'Chocolate Chip Cookies',
-    'Chicken Stir Fry',
+  // 2. An array holding structural recipe data objects
+  final List<Recipe> originalRecipes = const [
+    Recipe(
+      title: 'Spaghetti Carbonara',
+      duration: '25 mins',
+      ingredients: [
+        '200g Spaghetti',
+        '100g Guanciale/Pancetta',
+        '2 Whole Eggs',
+        '50g Pecorino Cheese',
+      ],
+      steps: [
+        'Boil pasta in salted water.',
+        'Crisp the pork in a dry pan.',
+        'Whisk eggs and cheese together.',
+        'Combine everything off the heat.',
+      ],
+    ),
+    Recipe(
+      title: 'Chocolate Chip Cookies',
+      duration: '45 mins',
+      ingredients: [
+        '200g Flour',
+        '150g Butter',
+        '100g Sugar',
+        '150g Chocolate Chips',
+      ],
+      steps: [
+        'Cream butter and sugar together.',
+        'Mix in flour gently.',
+        'Fold in chocolate chips.',
+        'Bake at 180°C for 12 minutes.',
+      ],
+    ),
   ];
 
   @override
@@ -30,22 +78,31 @@ class RecipeHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My Grandma\'s Cookbook'),
         backgroundColor: Colors.redAccent,
+        foregroundColor: Colors.white,
       ),
       body: ListView.builder(
-        itemCount: recipes.length,
+        itemCount: originalRecipes.length,
         itemBuilder: (context, index) {
+          final recipe = originalRecipes[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             child: ListTile(
-              title: Text(recipes[index], style: const TextStyle(fontSize: 18)),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              leading: const Icon(
+                Icons.restaurant_menu,
+                color: Colors.redAccent,
+              ),
+              title: Text(
+                recipe.title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text('⏱️ Cooking Time: ${recipe.duration}'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 14),
               onTap: () {
-                // 1. The MAGIC tool to move to a new screen (Pushing a card onto the stack)
+                // 3. Passing the ENTIRE recipe data object inside our route push argument!
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        RecipeDetailScreen(recipeName: recipes[index]),
+                    builder: (context) => RecipeDetailScreen(recipe: recipe),
                   ),
                 );
               },
@@ -57,52 +114,90 @@ class RecipeHomeScreen extends StatelessWidget {
   }
 }
 
-// --- SCREEN 2: THE DETAIL SCREEN ---
+// --- SCREEN 2: THE RESTRUCTURED DETAIL PAGE ---
 class RecipeDetailScreen extends StatelessWidget {
-  // 2. This variable acts like a mailbox to catch data passed from the first screen
-  final String recipeName;
+  // Catching the complete recipe object here
+  final Recipe recipe;
 
-  const RecipeDetailScreen({super.key, required this.recipeName});
+  const RecipeDetailScreen({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          recipeName,
-        ), // Displays the specific recipe title passed over!
+        title: Text(recipe.title),
         backgroundColor: Colors.redAccent,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'How to cook $recipeName:',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  recipe.title,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Chip(
+                  label: Text(recipe.duration),
+                  backgroundColor: Colors.redAccent.withValues(alpha: 0.15),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              'Ingredients:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
+            ),
+            // Displaying mapped widgets dynamically inside a column layout frame
+            ...recipe.ingredients.map(
+              (item) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text('• $item', style: const TextStyle(fontSize: 16)),
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
-              '1. Prep your fresh ingredients carefully.\n'
-              '2. Combine them inside a heated pan.\n'
-              '3. Cook thoroughly and serve warm!',
-              style: TextStyle(fontSize: 18, height: 1.5),
+              'Instructions:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
             ),
-            const SizedBox(height: 40),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // 3. Popping this card off the stack manually to go back home
-                  Navigator.pop(context);
+            Expanded(
+              child: ListView.builder(
+                itemCount: recipe.steps.length,
+                itemBuilder: (context, stepIndex) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: CircleAvatar(
+                      maxRadius: 12,
+                      backgroundColor: Colors.redAccent,
+                      child: Text(
+                        '${stepIndex + 1}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      recipe.steps[stepIndex],
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                ),
-                child: const Text(
-                  'Back to Recipes',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
             ),
           ],

@@ -1,24 +1,32 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_phase_four/main.dart'; // Matches your day 4 folder configuration
+import 'package:flutter_phase_four/main.dart';
 
 void main() {
-  testWidgets('Recipe Navigation Flow Test', (WidgetTester tester) async {
-    // 1. Render the initial home layout screen
+  testWidgets('Object Argument Route Flow Verification', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const RecipeApp());
 
-    // Expecting to find the homepage header title
+    // Check baseline text renders
     expect(find.text('My Grandma\'s Cookbook'), findsOneWidget);
     expect(find.text('Spaghetti Carbonara'), findsOneWidget);
 
-    // 2. Simulate tapping on the Spaghetti item row card
+    // Trigger user navigation simulation click
     await tester.tap(find.text('Spaghetti Carbonara'));
-    await tester
-        .pumpAndSettle(); // Wait patiently for screen animations to finish moving!
+    await tester.pumpAndSettle();
 
-    // 3. Verify that we have safely landed on our Detail page
-    expect(find.text('How to cook Spaghetti Carbonara:'), findsOneWidget);
-
-    // The main landing title text shouldn't exist anymore on top
-    expect(find.text('My Grandma\'s Cookbook'), findsNothing);
+    // Verify detail screen components mapped from object parameters exist cleanly
+    expect(
+      find.text('⏱️ Cooking Time: 25 mins'),
+      findsNothing,
+    ); // Subtitle shouldn't be here
+    expect(
+      find.text('• 200g Spaghetti'),
+      findsOneWidget,
+    ); // Ingredient successfully caught
+    expect(
+      find.text('Boil pasta in salted water.'),
+      findsOneWidget,
+    ); // Step successfully caught
   });
 }
