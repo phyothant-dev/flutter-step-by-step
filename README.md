@@ -37,7 +37,17 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Managing non-blocking backend tasks natively using Asynchronous Dart architectures (`Future`, `async`, and `await`).
     * De-serializing and parsing complex nested string records (`jsonDecode`) from REST APIs into type-safe internal collection frames (`Map<String, dynamic>`).
     * Combining background state handlers (`initState()`) with visual components to present automatic loaders (`CircularProgressIndicator`).
-    * Managing remote fallback responses gracefully using conditional view rendering and localized error handling indicators (`SnackBar`).
+    * Replacing deprecated opacity layers with precision-safe modern token APIs (`.withValues(alpha: ...)`).
+
+### 🟥 Phase 4: Multi-Screen Navigation & Architecture (`flutter_phase_four`)
+* **Project Goal:** Construct an application utilizing a scalable multi-screen system that mimics production workflows by passing data arguments cleanly along a continuous navigation trail.
+* **Application Built:** A dynamic **Personal Recipe Book / Cookbook Application**.
+* **Key Concepts Mastered:**
+    * Managing screen histories using the unified application history tree via `Navigator.push` and `Navigator.pop`.
+    * Utilizing `MaterialPageRoute` configurations to instantiate clean, native-looking interface slide transitions.
+    * Building advanced customized object-oriented blueprints (`Recipe` classes) to house arrays of parameters.
+    * Packaging and passing complex custom objects as arguments between different route widgets.
+    * Writing integrated multi-page functional route verification tests using `tester.pumpAndSettle()`.
 
 ---
 
@@ -49,6 +59,8 @@ During the development of these phases, we encountered and documented common rea
     When mutating a fresh `flutter create` template, the default automated counter smoke-tests throw errors expecting historical text fields (`"0"`). We updated `test/widget_test.dart` across phases using modern `WidgetTester` programmatic routines matching the revised layout trees (`pumpWidget`, `find.text`, `findsOneWidget`, `find.byType`).
 2.  **Emulator Disk Storage Starvation (`INSTALL_FAILED_INSUFFICIENT_STORAGE`):**
     Virtual execution environments can deplete pre-allocated storage profiles. This layout bottleneck is bypassable via **Android Studio Device Manager** -> **Target Device Options** -> **Wipe Data**. This purges internal system caches and forces a completely fresh cold boot cycle initialization.
+3.  **Deprecation of `withOpacity` Color API:**
+    Modern Dart linter configurations identify legacy alpha channel calls. Handled compiler warnings by refactoring color models to the newer, precision-safe `.withValues(alpha: ...)` parameters to maintain architectural compliance.
 
 ---
 
