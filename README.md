@@ -8,7 +8,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
 
 ## 🗺️ The Project Pathway
 
-### 🟦 Phase 1: The Basics & UI Layout (`flutter_day_one`)
+### 🟦 Phase 1: The Basics & UI Layout (`flutter_phase_one`)
 * **Project Goal:** Master basic Dart syntax, the widget tree structure, and positional elements on a mobile screen.
 * **Application Built:** A beautiful, highly professional **Digital Business Card / Portfolio App**.
 * **Key Concepts Mastered:**
@@ -18,7 +18,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Deep understanding of styling boundaries using `Container`, `Padding`, `Card`, `ListTile`, and `Divider`.
     * Configuring local assets (images and custom Google Fonts typography) inside the strict indentation schema of `pubspec.yaml`.
 
-### 🟨 Phase 2: Interactivity & Local State (`flutter_day_two` / `flutter_phase_two`)
+### 🟨 Phase 2: Interactivity & Local State (`flutter_phase_two`)
 * **Project Goal:** Learn how to make an application react dynamically to runtime user inputs and update visible parameters seamlessly.
 * **Application Built:** A clean, minimalist **Habit Tracker & To-Do Application**.
 * **Key Concepts Mastered:**
