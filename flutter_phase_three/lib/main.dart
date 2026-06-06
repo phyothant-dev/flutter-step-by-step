@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; // 1. Import the internet package
-import 'dart:convert'; // 2. Import a helper to decode JSON text
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const CryptoApp());
@@ -23,102 +23,114 @@ class CryptoPriceScreen extends StatefulWidget {
 }
 
 class _CryptoPriceScreenState extends State<CryptoPriceScreen> {
-  // Our local state variables to hold the server's response
-  String bitcoinPrice = 'Loading...';
+  // 1. Instead of a single string, we use a Map to keep multiple coin values!
+  Map<String, dynamic> coinPrices = {};
   bool isLoading = true;
 
-  // 3. This is an ASYNCHRONOUS function. It runs in the background.
-  Future<void> fetchBitcoinPrice() async {
+  Future<void> fetchPrices() async {
     try {
-      // The web address that returns raw text data about Bitcoin
+      // We modified the URL address to ask for bitcoin, ethereum, and litecoin all at once!
       final url = Uri.parse(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin&vs_currencies=usd',
       );
 
-      // 'await' tells the app: "Wait here patiently until the server responds, but don't freeze the UI!"
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // Successfully got data! Decode the text string into a readable map
         final data = jsonDecode(response.body);
 
-        // Update our local state with the extracted price
         setState(() {
-          bitcoinPrice = '\$' + data['bitcoin']['usd'].toString();
+          coinPrices = data; // Store the whole nested JSON map into our state
           isLoading = false;
         });
       } else {
-        setState(() {
-          bitcoinPrice = 'Error loading price';
-          isLoading = false;
-        });
+        showSnackbarError('Server returned an error');
       }
     } catch (e) {
-      setState(() {
-        bitcoinPrice = 'No Internet Connection';
-        isLoading = false;
-      });
+      showSnackbarError('No Internet Connection');
     }
+  }
+
+  void showSnackbarError(String message) {
+    setState(() {
+      isLoading = false;
+    });
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   void initState() {
     super.initState();
-    // 4. This automatically triggers our internet request the exact moment the app opens
-    fetchBitcoinPrice();
+    fetchPrices();
   }
 
   @override
   Widget build(BuildContext context) {
+    // 2. Extract keys so our ListView builder knows how to reference them by index
+    List<String> coinKeys = coinPrices.keys.toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Live Crypto Tracker'),
         backgroundColor: Colors.orangeAccent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              setState(() {
+                isLoading = true;
+              });
+              fetchPrices();
+            },
+          ),
+        ],
       ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.orangeAccent,
-              ) // Show a spinning loading wheel
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.currency_bitcoin,
-                    size: 80,
-                    color: Colors.orange,
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: Colors.orangeAccent),
+            )
+          : coinKeys.isEmpty
+          ? const Center(child: Text('No data found.'))
+          : ListView.builder(
+              itemCount: coinKeys.length,
+              itemBuilder: (context, index) {
+                String coinName = coinKeys[index];
+                // Accessing nested maps safely: data['bitcoin']['usd']
+                double price = coinPrices[coinName]['usd'].toDouble();
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Bitcoin (BTC) Price:',
-                    style: TextStyle(fontSize: 20, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    bitcoinPrice,
-                    style: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.orange.withOpacity(0.2),
+                      child: Icon(
+                        coinName == 'bitcoin'
+                            ? Icons.currency_bitcoin
+                            : Icons.monetization_on,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    // capitalize the first letter of the coin key for the UI display
+                    title: Text(
+                      coinName.toUpperCase(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    trailing: Text(
+                      '\$${price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  // A button to manually refresh the price
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      fetchBitcoinPrice();
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Refresh Price'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orangeAccent,
-                    ),
-                  ),
-                ],
-              ),
-      ),
+                );
+              },
+            ),
     );
   }
 }

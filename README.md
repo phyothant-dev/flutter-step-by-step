@@ -8,7 +8,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
 
 ## 🗺️ The Project Pathway
 
-### 🟦 Phase 1: The Basics & UI Layout (`flutter_day_one`)
+### 🟦 Phase 1: The Basics & UI Layout (`flutter_phase_one`)
 * **Project Goal:** Master basic Dart syntax, the widget tree structure, and positional elements on a mobile screen.
 * **Application Built:** A beautiful, highly professional **Digital Business Card / Portfolio App**.
 * **Key Concepts Mastered:**
@@ -18,7 +18,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Deep understanding of styling boundaries using `Container`, `Padding`, `Card`, `ListTile`, and `Divider`.
     * Configuring local assets (images and custom Google Fonts typography) inside the strict indentation schema of `pubspec.yaml`.
 
-### 🟨 Phase 2: Interactivity & Local State (`flutter_day_two`)
+### 🟨 Phase 2: Interactivity & Local State (`flutter_phase_two`)
 * **Project Goal:** Learn how to make an application react dynamically to runtime user inputs and update visible parameters seamlessly.
 * **Application Built:** A clean, minimalist **Habit Tracker & To-Do Application**.
 * **Key Concepts Mastered:**
@@ -29,7 +29,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Preventing structural layout crashes using layout constraints like the `Expanded` widget inside layout elements.
     * Custom data modeling by transitioning lists from plain text `Strings` to dedicated structural blueprints (`HabitItem` classes).
 
-### 🟧 Phase 3: Working with APIs & Internet Data (`flutter_day_three`)
+### 🟧 Phase 3: Working with APIs & Internet Data (`flutter_phase_three`)
 * **Project Goal:** Break out of the local application environment sandbox to communicate with remote global servers and format asynchronous streaming live feeds.
 * **Application Built:** A live **Multi-Cryptocurrency Price Tracker** (fetching real-time valuations for Bitcoin, Ethereum, and Litecoin).
 * **Key Concepts Mastered:**
