@@ -8,7 +8,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
 
 ## 🗺️ The Project Pathway
 
-### 🟦 Phase 1: The Basics & UI Layout (`flutter_phase_one`)
+### 🟦 Phase 1: The Basics & UI Layout (`flutter_day_one`)
 * **Project Goal:** Master basic Dart syntax, the widget tree structure, and positional elements on a mobile screen.
 * **Application Built:** A beautiful, highly professional **Digital Business Card / Portfolio App**.
 * **Key Concepts Mastered:**
@@ -18,7 +18,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Deep understanding of styling boundaries using `Container`, `Padding`, `Card`, `ListTile`, and `Divider`.
     * Configuring local assets (images and custom Google Fonts typography) inside the strict indentation schema of `pubspec.yaml`.
 
-### 🟨 Phase 2: Interactivity & Local State (`flutter_phase_two`)
+### 🟨 Phase 2: Interactivity & Local State (`flutter_day_two`)
 * **Project Goal:** Learn how to make an application react dynamically to runtime user inputs and update visible parameters seamlessly.
 * **Application Built:** A clean, minimalist **Habit Tracker & To-Do Application**.
 * **Key Concepts Mastered:**
@@ -27,7 +27,17 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Intercepting and processing text inputs using `TextField` bound to a dedicated `TextEditingController`.
     * Performance-optimized scrollable viewports using the dynamic factory pattern: `ListView.builder`.
     * Preventing structural layout crashes using layout constraints like the `Expanded` widget inside layout elements.
-    * Writing modern, automated user interface expectations inside the `test/widget_test.dart` suite.
+    * Custom data modeling by transitioning lists from plain text `Strings` to dedicated structural blueprints (`HabitItem` classes).
+
+### 🟧 Phase 3: Working with APIs & Internet Data (`flutter_day_three`)
+* **Project Goal:** Break out of the local application environment sandbox to communicate with remote global servers and format asynchronous streaming live feeds.
+* **Application Built:** A live **Multi-Cryptocurrency Price Tracker** (fetching real-time valuations for Bitcoin, Ethereum, and Litecoin).
+* **Key Concepts Mastered:**
+    * Integrating and downloading custom external plugins using `flutter pub add http`.
+    * Managing non-blocking backend tasks natively using Asynchronous Dart architectures (`Future`, `async`, and `await`).
+    * De-serializing and parsing complex nested string records (`jsonDecode`) from REST APIs into type-safe internal collection frames (`Map<String, dynamic>`).
+    * Combining background state handlers (`initState()`) with visual components to present automatic loaders (`CircularProgressIndicator`).
+    * Managing remote fallback responses gracefully using conditional view rendering and localized error handling indicators (`SnackBar`).
 
 ---
 
@@ -36,7 +46,7 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
 During the development of these phases, we encountered and documented common real-world developer milestones:
 
 1.  **Outdated Test Architecture Failures:**
-    When mutating a fresh `flutter create` template, the default automated counter smoke-tests throw errors expecting historical text fields (`"0"`). We updated `test/widget_test.dart` with modern `WidgetTester` programmatic routines matching the revised layout trees (`pumpWidget`, `find.text`, `findsOneWidget`).
+    When mutating a fresh `flutter create` template, the default automated counter smoke-tests throw errors expecting historical text fields (`"0"`). We updated `test/widget_test.dart` across phases using modern `WidgetTester` programmatic routines matching the revised layout trees (`pumpWidget`, `find.text`, `findsOneWidget`, `find.byType`).
 2.  **Emulator Disk Storage Starvation (`INSTALL_FAILED_INSUFFICIENT_STORAGE`):**
     Virtual execution environments can deplete pre-allocated storage profiles. This layout bottleneck is bypassable via **Android Studio Device Manager** -> **Target Device Options** -> **Wipe Data**. This purges internal system caches and forces a completely fresh cold boot cycle initialization.
 
