@@ -1,4 +1,4 @@
-# Flutter Step-by-Step: Beginner Project Roadmap
+# # Flutter Step-by-Step: Beginner Project Roadmap
 
 Welcome to your project-based Flutter learning journey! This repository documents your progress as you transition from a complete beginner to building interactive, production-ready mobile applications. 
 
@@ -69,6 +69,26 @@ By building real-world projects line-by-line, you build muscle memory for Flutte
     * Restructuring sequential asynchronous method blocks safely using proper Dart signatures (`Future<T> name() async {}`).
     * Overriding hardware device requirements during regression checking loops using unified testing mocks (`SharedPreferences.setMockInitialValues`).
 
+### 🟩 Phase 7: Modern State Management with Riverpod (`flutter_phase_seven`)
+* **Project Goal:** Decouple state entirely from the layout hierarchy using a global, compile-time safe reactive framework that avoids context dependencies.
+* **Application Built:** A modern, robust **Riverpod Action Counter System**.
+* **Key Concepts Mastered:**
+    * Wrapping the root engine in a global `ProviderScope` to manage shared states independently of the widget tree.
+    * Implementing modern **Riverpod 3.x Notifier** and **NotifierProvider** patterns, moving completely away from deprecated legacy providers like `StateProvider`.
+    * Utilizing `ConsumerWidget` and tracking state mutations asynchronously via `WidgetRef`.
+    * Selectively listening to live data updates with `ref.watch(provider)` to optimize rendering, and targeting method calls with `ref.read(provider.notifier)`.
+    * Injecting functional dependency controls within headless automated testing cycles via `ProviderScope` mock sandboxes.
+
+### 🟦 Phase 8: Advanced Production Navigation & Nested Routes (`flutter_phase_eight`)
+* **Project Goal:** Design complex multi-tier shell layouts with state-retaining navigation flows that separate global paths from tab-specific route histories.
+* **Application Built:** An advanced **Nested Routing Shell Hub** featuring distinct tabbed workspaces.
+* **Key Concepts Mastered:**
+    * Creating persistent multi-page interfaces using `BottomNavigationBar` linked to layout controllers.
+    * Implementing an `IndexedStack` to cache active pages in memory, ensuring user input and scroll positions survive tab toggles.
+    * Constructing localized inner sub-routing stacks by wrapping sub-views in an independent child `Navigator`.
+    * Isolating tab history trees with a dedicated `GlobalKey<NavigatorState>` combined with an explicit `onGenerateRoute` mapping layout.
+    * Triggering deeper page transitions within a specific tab stack while keeping the outer persistent structural shell completely visible underneath.
+
 ---
 
 ## 🛠️ Environment Configuration & Common Troubleshooting
@@ -85,6 +105,10 @@ During development, we encountered and documented common real-world developer mi
     Encountered syntax compiler blocks when nesting structural card elements. Documented that structural layout modifiers (`Container`, `Padding`, `Center`) are single-child utilities expecting the explicit parameter named key `child:` rather than custom layout types.
 5.  **Asynchronous Modifier Misalignment Syntax Blocks (`undefined_class async`):**
     Experienced a cascade of compiler errors when declaring asynchronous tasks. Hardwired the strict structural signature requirement of Dart: the `async` modifier must strictly succeed the method parameter signature `()` and precede the functional logic opening block `{}` rather than prefixing the return `Future`.
+6.  **Riverpod 3.0+ Deprecation Breaks (`undefined_function StateProvider`):**
+    Encountered compilation errors when implementing baseline Riverpod tutorials using modern package boundaries (`^3.3.1`). Resolved by refactoring the codebase to strictly implement the modern class-based `Notifier` and global `NotifierProvider` layout standards required by Riverpod 3.x.
+7.  **Global App-Level Context Overflows during Sub-Routing Navigation:**
+    Experienced layout breaks when child views overrode parent tabs. Mastered the isolation rule of multi-tiered routing: pushing screens through an inner `Navigator` requires targeting a localized contextual `BuildContext` nested under that sub-navigator, whereas full-screen overrides require targeting the root global context shell.
 
 ---
 
