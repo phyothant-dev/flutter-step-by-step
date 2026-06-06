@@ -1,18 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_phase_two/main.dart'; // Makes sure this matches your project name
+import 'package:flutter_phase_two/main.dart'; // Make sure this matches your project folder name
 
 void main() {
-  testWidgets('Todo app display test', (WidgetTester tester) async {
-    // 1. Tell Flutter to build our TodoApp inside the test environment
+  testWidgets('Todo app layout test', (WidgetTester tester) async {
     await tester.pumpWidget(const TodoApp());
 
-    // 2. Check if our custom app bar title "My Habit Tracker" is on the screen
+    // Verify our elements exist
     expect(find.text('My Habit Tracker'), findsOneWidget);
-
-    // 3. Check if one of our initial tasks exists on the screen
-    expect(find.text('Learn Flutter'), findsOneWidget);
-
-    // 4. Verify that the old counter text "0" is NOT on the screen anymore
-    expect(find.text('0'), findsNothing);
+    expect(
+      find.text('Enter a new habit...'),
+      findsOneWidget,
+    ); // Checks if input field exists
+    expect(find.text('Buy groceries'), findsOneWidget);
   });
 }
